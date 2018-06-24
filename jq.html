@@ -1,0 +1,108 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        td {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+            display: inline-block;
+            margin: 5px;
+            line-height: 100px;
+            text-align: center;
+        }
+
+        .active {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button>开始抽奖</button>
+
+    <table>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+        </tr>
+    </table>
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        var prevTd, // 上一个td
+            currentTd, // 当前td
+            startTimer, // 开始抽奖定时器
+            endTimer, // 结束抽奖定时器
+            btnFlag = true; // 抽奖按钮开关
+        function sel(index) {
+
+            if (prevTd) {
+                prevTd.removeClass('active');
+            }
+            currentTd = $('td').eq(index);
+            currentTd.addClass('active');
+            prevTd = currentTd;
+        }
+
+        // $('table').on('click', 'td', function() {
+        //     sel(parseInt($(this).text()));
+        // })
+
+        $('button').on('click', function () {
+
+            if (btnFlag) {
+                btnFlag = false;
+
+                if (startTimer) {
+                    clearInterval(startTimer);
+                }
+                startTimer = setInterval(function () {
+
+                    console.log(parseInt(Math.random().toFixed(1).split('.')[1]));
+                    sel(parseInt(Math.random().toFixed(1).split('.')[1]));
+                }, 200);
+
+
+                if (endTimer) {
+                    clearTimeout(endTimer);
+                }
+                endTimer = setTimeout(function () {
+                    btnFlag = true;
+                    alert('恭喜你, 获得' + currentTd.text() + '等奖');
+                    if (startTimer) {
+
+                        clearInterval(startTimer);
+                    }
+                    if (endTimer) {
+                        clearTimeout(endTimer);
+                    }
+                }, 2000);
+                
+
+            } else {
+                console.log(btnFlag);
+            }
+
+        });
+    </script>
+</body>
+
+</html>
